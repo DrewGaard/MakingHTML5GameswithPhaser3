@@ -13,6 +13,12 @@ class SceneMain extends Phaser.Scene {
         this.load.image("barrier", "images/barrier.png");
     }
     create() {
+
+        var gridConfig = {rows:5,cols:5,scene:this};
+        var alignGrid = new AlignGrid(gridConfig);
+        alignGrid.show();
+
+
         this.road = new Road({scene:this});
         this.road.x = this.game.config.width/2;
 
