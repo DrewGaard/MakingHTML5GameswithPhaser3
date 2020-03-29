@@ -50,4 +50,12 @@ class AlignGrid
 
         this.graphics.strokePath();
     }
+    placeAt(xx, yy, obj)
+    {
+        var x2 = this.cw*xx+this.cw/2;
+        var y2 = this.ch*yy+this.ch/2;
+
+        obj.x = x2;
+        obj.y = y2;
+    }
 }
