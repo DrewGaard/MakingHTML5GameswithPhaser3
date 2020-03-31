@@ -14,11 +14,6 @@ class SceneMain extends Phaser.Scene {
     }
     create() {
 
-        var gridConfig = {rows:5,cols:5,scene:this};
-        var alignGrid = new AlignGrid(gridConfig);
-        alignGrid.showNumbers();
-
-
         this.road = new Road({scene:this});
         this.road.x = this.game.config.width/2;
 
@@ -34,9 +29,14 @@ class SceneMain extends Phaser.Scene {
         model.score = 100;
         console.log(model.score);
 
-
-
         this.road.makeLines();
+
+        var gridConfig = {rows:5,cols:5,scene:this};
+        this.alignGrid = new AlignGrid(gridConfig);
+        this.alignGrid.showNumbers();
+
+        this.alignGrid.placeAtIndex(4,this.sb);
+
     }
     update() {
         this.road.moveLines();
