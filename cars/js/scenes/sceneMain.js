@@ -11,15 +11,34 @@ class SceneMain extends Phaser.Scene {
         this.load.image("pcar2", "images/pcar2.png");
         this.load.image("cone", "images/cone.png");
         this.load.image("barrier", "images/barrier.png");
+
+        this.load.image("button1", "images/ui/buttons/1/1.png");
+
+        this.load.audio('cat',["audio/meow.mp3","audio/meow.ogg"]);
+
+        this.load.audio('backgroundMusic',["audio/background.mp3","audio/background.ogg"]);
+
+
+        this.load.image("toggleBack","images/ui/toggles/1.png");
+        this.load.image("toggleBack","images/ui/icons/sfx_off.png");
+        this.load.image("toggleBack","images/ui/icons/sfx_on.png");
+        this.load.image("toggleBack","images/ui/icons/music_on.png");
+        this.load.image("toggleBack","images/ui/icons/music_off.png");
+
+    
     }
     create() {
+        emitter = new Phaser.Events.EventEmitter();
+        controller = new Controller();
+
+        var mediaManager = new MediaManager({scene:this});
+
+        mediaManager.setBackgroundMusic('backgroundMusic');
 
         this.road = new Road({scene:this});
         this.road.x = this.game.config.width/2;
 
-        emitter = new Phaser.Events.EventEmitter();
-
-        controller = new Controller();
+    
 
 
         this.sb = new ScoreBox({scene:this});
@@ -37,6 +56,13 @@ class SceneMain extends Phaser.Scene {
 
         this.alignGrid.placeAtIndex(4,this.sb);
 
+        emitter.on('button_pressed',this.buttonPressed,this);
+    }
+    buttonPressed(params)
+    {
+        console.log(params);
+        emitter.emit(G.PLAY_SOUND, 'cat');
+        this.scene.start("SceneOver");
     }
     update() {
         this.road.moveLines();

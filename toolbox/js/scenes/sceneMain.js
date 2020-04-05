@@ -11,20 +11,18 @@ class SceneMain extends Phaser.Scene {
         this.load.image("pcar2", "images/pcar2.png");
         this.load.image("cone", "images/cone.png");
         this.load.image("barrier", "images/barrier.png");
+
+        this.load.image("button1", "images/ui/buttons/1/1.png");
+    
     }
     create() {
-
-        var gridConfig = {rows:5,cols:5,scene:this};
-        var alignGrid = new AlignGrid(gridConfig);
-        alignGrid.showNumbers();
-
+        emitter = new Phaser.Events.EventEmitter();
+        controller = new Controller();
 
         this.road = new Road({scene:this});
         this.road.x = this.game.config.width/2;
 
-        emitter = new Phaser.Events.EventEmitter();
-
-        controller = new Controller();
+    
 
 
         this.sb = new ScoreBox({scene:this});
@@ -34,9 +32,26 @@ class SceneMain extends Phaser.Scene {
         model.score = 100;
         console.log(model.score);
 
-
-
         this.road.makeLines();
+
+        var gridConfig = {rows:5,cols:5,scene:this};
+        this.alignGrid = new AlignGrid(gridConfig);
+        this.alignGrid.showNumbers();
+
+        this.alignGrid.placeAtIndex(4,this.sb);
+
+
+        var fireText = {color:'red', fontSize:20};
+        var flatButton = new FlatButton({scene:this,key:'button1',text:'Fire!',x:200,y:100,event:'button_pressed',params:'fire_lasers',textConfig:fireText});
+
+
+
+        emitter.on('button_pressed',this.buttonPressed,this);
+    }
+    buttonPressed(params)
+    {
+        console.log(params);
+        this.scene.start("SceneOver");
     }
     update() {
         this.road.moveLines();
